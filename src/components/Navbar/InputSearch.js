@@ -8,16 +8,16 @@ const InputSearch = () => {
   const searchRef = useRef();
   const router = useRouter();
 
-  const searchHandler = (event) => {
-    event.preventDefault();
-    const keyword = searchRef.current.value;
-    router.push(`/search/${keyword}`);
-  };
-
-  const keyDownHandler = (event) => {
-    if (event.key === "Enter") {
+  const handleSearch = (event) => {
+    if (
+      event.type === "click" ||
+      (event.type === "keydown" && event.key === "Enter")
+    ) {
       event.preventDefault();
       const keyword = searchRef.current.value;
+      if (keyword === "") {
+        return;
+      }
       router.push(`/search/${keyword}`);
     }
   };
@@ -28,9 +28,13 @@ const InputSearch = () => {
         placeholder="cari anime..."
         className="w-full p-2 rounded"
         ref={searchRef}
-        onKeyDown={keyDownHandler}
+        onKeyDown={handleSearch}
       />
-      <button className="absolute top-2 end-2" onClick={searchHandler}>
+      <button
+        type="submit"
+        className="absolute top-2 end-2"
+        onClick={handleSearch}
+      >
         <MagnifyingGlass size={24} />
       </button>
     </div>
